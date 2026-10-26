@@ -35,7 +35,8 @@ Other keys: **R** restarts, **N** next course, **M** mute, **F8** cycles
 the display shape, **F9** toggles whole-number zoom.
 
 Command line, after `--`: `--pack=PATH`, `--placeholder`, `--course=PATH`,
-`--export-course=PATH`. See [asset packs](docs/asset-packs.md) and the
+`--export-course=PATH`, `--display=MODE` (`original`, `fill` or a ratio such as
+`4:3`, for this run only). See [asset packs](docs/asset-packs.md) and the
 [course format](docs/course-format.md).
 
 ## Browser

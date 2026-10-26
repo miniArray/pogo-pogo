@@ -6,6 +6,7 @@ extends Node2D
 ##   --pack=PATH          use an asset pack (directory or zip)
 ##   --placeholder        ignore every pack and draw placeholder shapes
 ##   --export-course=PATH write the selected course as canonical JSON and quit
+##   --display=MODE       start in a display shape (original, fill or W:H) for this run
 ## Environment: POGO_PACK and POGO_COURSE act like --pack and --course.
 const Definition = preload("res://src/course/course_definition.gd")
 const Game = preload("res://src/game/course_game.gd")
@@ -63,6 +64,9 @@ func _ready() -> void:
 	_sounds = Sounds.new()
 	add_child(_sounds)
 	_load_settings()
+	if options.has("display"):
+		# A launcher's choice for this run; saved preferences stay unchanged.
+		display_mode = Layout.valid_mode(str(options.display))
 	_select_pack(options)
 	_select_course(options)
 	if options.has("export-course"):
@@ -83,7 +87,7 @@ func _ready() -> void:
 		_web_pad = window.pogoPad
 		_web_action = JavaScriptBridge.create_callback(_on_web_action)
 		window.pogoAction = _web_action
-	print("POGO_READY course=%s pack=%s" % [game.definition.id(), _pack_label()])
+	print("POGO_READY course=%s pack=%s display=%s" % [game.definition.id(), _pack_label(), display_mode])
 
 
 func _options() -> Dictionary:

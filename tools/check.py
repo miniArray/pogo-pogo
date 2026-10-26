@@ -74,6 +74,10 @@ def main():
             label='a broken pack falls back to placeholders')
         run(['--quit-after', '120', '--', f'--pack={pack}', '--placeholder'],
             ['POGO_READY course=first-steps pack=placeholder'], label='--placeholder ignores the pack')
+        run(['--quit-after', '60', '--', '--display=fill'],
+            ['display=fill'], label='--display chooses the display shape for the run')
+        run(['--quit-after', '60', '--', '--display=7:0'],
+            ['display=original'], label='an invalid --display falls back to original')
         exported = pathlib.Path(scratch) / 'exported.json'
         run(['--', '--course=res://courses/stilt-gardens.json', f'--export-course={exported}'],
             ['COURSE_EXPORTED stilt-gardens'], label='export a course')
