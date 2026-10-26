@@ -58,6 +58,7 @@ nix develop -c python3 tools/check.py          # all checks, no pack needed
 nix develop -c tools/export.sh web             # web export
 nix develop -c python3 tools/browser-check.py  # plays the web export in Chromium
 nix build                                      # Linux package for this system
+nix build .#packages.aarch64-linux.linux-game  # ARM64 device build, no ARM builder needed
 ```
 
 `tools/build-courses.py` rebuilds the bundled courses.

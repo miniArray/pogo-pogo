@@ -14,6 +14,13 @@
       packages = forAll (pkgs: rec {
         pogo-pogo = pkgs.callPackage ./package.nix { buildStamp = stamp; };
         default = pogo-pogo;
+        # For devices: the pack is exported on x86_64 and runs on this system's
+        # Godot, so an aarch64 device only downloads prebuilt parts.
+        linux-game = import ./nix/linux-game.nix {
+          buildPkgs = nixpkgs.legacyPackages.x86_64-linux;
+          runtimePkgs = pkgs;
+          source = ./.;
+        };
       });
 
       devShells = forAll (pkgs: {
