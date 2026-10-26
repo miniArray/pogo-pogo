@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>$GODOT_PROJECT_NAME</title>
+  <link rel="stylesheet" href="controller.css">
+  $GODOT_HEAD_INCLUDE
+</head>
+<body>
+  <div id="app">
+    <header id="toolbar">
+      <strong class="title">Pogo! Pogo!</strong>
+      <button type="button" id="reset-button">Reset</button>
+      <button type="button" id="toggle-pad" aria-pressed="true">Touch controls</button>
+      <button type="button" id="settings-button" aria-expanded="false" aria-controls="settings">Settings</button>
+    </header>
+    <section id="settings" hidden aria-label="Settings">
+      <fieldset>
+        <legend>Course</legend>
+        <label>Bundled course
+          <select id="course-select">
+            <option value="0">First Steps</option>
+            <option value="1">Stilt Gardens</option>
+            <option value="2">Shaft and Spires</option>
+          </select>
+        </label>
+        <button type="button" id="course-play">Play course (restarts)</button>
+        <button type="button" id="course-load">Load course JSON…</button>
+        <button type="button" id="course-save">Save course JSON</button>
+        <input type="file" id="course-file" accept=".json,application/json" hidden>
+      </fieldset>
+      <fieldset>
+        <legend>Asset pack</legend>
+        <p id="pack-state">No pack: placeholder shapes.</p>
+        <button type="button" id="pack-load">Choose pack (.zip)…</button>
+        <button type="button" id="pack-clear">Remove pack</button>
+        <input type="file" id="pack-file" accept=".zip,application/zip" hidden>
+      </fieldset>
+      <fieldset>
+        <legend>Display and sound</legend>
+        <label>Shape
+          <select id="display-mode">
+            <option value="original">Original 256×240</option>
+            <option value="fill">Fill the window</option>
+            <option value="16:9">16:9</option>
+            <option value="4:3">4:3</option>
+            <option value="1:1">1:1</option>
+            <option value="21:9">21:9</option>
+            <option value="32:9">32:9</option>
+            <option value="16:10">16:10</option>
+            <option value="3:2">3:2</option>
+            <option value="9:16">9:16</option>
+          </select>
+        </label>
+        <label><input type="checkbox" id="sharp" checked> Sharp pixels (whole-number zoom)</label>
+        <label><input type="checkbox" id="muted"> Mute</label>
+      </fieldset>
+      <p class="hint">Keys: arrows move, Z jumps, X pogo (Down+X in the air) and swing. R resets, N next course, M mute, F8 shape, F9 sharp.</p>
+    </section>
+    <main id="stage">
+      <canvas id="canvas" tabindex="0" aria-label="Pogo! Pogo! game. Arrows move, Z jumps, X pogo and swing.">Your browser does not support canvas.</canvas>
+      <div id="status">
+        <progress id="status-progress"></progress>
+        <div id="status-notice"></div>
+      </div>
+    </main>
+    <nav id="controller" aria-label="Touch controls">
+      <div id="dpad">
+        <button type="button" data-mask="8" aria-label="Up">▲</button>
+        <button type="button" data-mask="2" aria-label="Left">◀</button>
+        <button type="button" data-mask="1" aria-label="Right">▶</button>
+        <button type="button" data-mask="4" aria-label="Down">▼</button>
+      </div>
+      <div id="face">
+        <button type="button" data-mask="64" aria-label="B: pogo and swing">B</button>
+        <button type="button" data-mask="128" aria-label="A: jump">A</button>
+      </div>
+    </nav>
+  </div>
+<script src="controller.js"></script>
+<script src="$GODOT_URL"></script>
+<script>
+const GODOT_CONFIG = $GODOT_CONFIG;
+const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
+const engine = new Engine(GODOT_CONFIG);
+(function () {
+  const status = document.getElementById('status');
+  const progress = document.getElementById('status-progress');
+  const notice = document.getElementById('status-notice');
+  function fail(err) {
+    console.error(err);
+    progress.hidden = true;
+    notice.textContent = err instanceof Error ? err.message : String(err);
+  }
+  const missing = Engine.getMissingFeatures({threads: GODOT_THREADS_ENABLED});
+  if (missing.length !== 0) {
+    fail('This browser lacks features the game needs:\n' + missing.join('\n'));
+    return;
+  }
+  engine.startGame({
+    onProgress(current, total) {
+      if (current > 0 && total > 0) {
+        progress.value = current;
+        progress.max = total;
+      }
+    },
+  }).then(() => { status.remove(); window.pogoShell.started(); }, fail);
+}());
+</script>
+</body>
+</html>

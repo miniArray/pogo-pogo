@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pogo-pogo:asset-pack:1",
+  "title": "Pogo! Pogo! asset pack manifest v1 (pack.json)",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Use a display name of 1..64 characters."
+    },
+    "tilesets": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "backdrop": {
+            "type": "string",
+            "minLength": 7,
+            "maxLength": 7,
+            "pattern": "^#[0-9A-Fa-f]{6}(?![\\s\\S])",
+            "description": "Use a #RRGGBB colour."
+          },
+          "tiles": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/$defs/path"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sprites": {
+      "type": "object",
+      "properties": {
+        "player": {
+          "$ref": "#/$defs/sprite"
+        },
+        "walker": {
+          "$ref": "#/$defs/sprite"
+        },
+        "gem": {
+          "$ref": "#/$defs/sprite"
+        },
+        "goal": {
+          "$ref": "#/$defs/sprite"
+        }
+      },
+      "additionalProperties": false
+    },
+    "hud": {
+      "type": "object",
+      "properties": {
+        "band": {
+          "$ref": "#/$defs/path"
+        },
+        "health": {
+          "$ref": "#/$defs/path"
+        },
+        "health_empty": {
+          "$ref": "#/$defs/path"
+        },
+        "life": {
+          "$ref": "#/$defs/path"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sounds": {
+      "type": "object",
+      "properties": {
+        "land": {
+          "$ref": "#/$defs/path"
+        },
+        "pogo": {
+          "$ref": "#/$defs/path"
+        },
+        "climb": {
+          "$ref": "#/$defs/path"
+        },
+        "swing": {
+          "$ref": "#/$defs/path"
+        },
+        "swing_miss": {
+          "$ref": "#/$defs/path"
+        },
+        "hurt": {
+          "$ref": "#/$defs/path"
+        },
+        "knockout": {
+          "$ref": "#/$defs/path"
+        },
+        "gem": {
+          "$ref": "#/$defs/path"
+        },
+        "checkpoint": {
+          "$ref": "#/$defs/path"
+        },
+        "defeat": {
+          "$ref": "#/$defs/path"
+        },
+        "retry": {
+          "$ref": "#/$defs/path"
+        },
+        "game_over": {
+          "$ref": "#/$defs/path"
+        },
+        "clear": {
+          "$ref": "#/$defs/path"
+        }
+      },
+      "additionalProperties": false
+    },
+    "music": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/path"
+      }
+    }
+  },
+  "required": [
+    "format_version",
+    "name"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./-]*(?![\\s\\S])",
+      "description": "Use a relative path inside the pack with letters, digits, underscore, dot, slash or hyphen."
+    },
+    "sprite": {
+      "type": "object",
+      "properties": {
+        "sheet": {
+          "$ref": "#/$defs/path"
+        },
+        "texels_per_pixel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        }
+      },
+      "required": [
+        "sheet"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.godot/
+*.import
+build/
+export/
+__pycache__/
+# Asset packs are player input: never commit one.
+*.zip
+pack.json
+build-stamp.txt

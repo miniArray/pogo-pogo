@@ -1,0 +1,284 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pogo-pogo:course:1",
+  "title": "Pogo! Pogo! course v1",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "level": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])",
+          "description": "Use 1..64 lowercase letters, digits, dot, underscore or hyphen; start with a letter or digit."
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "terrain": {
+      "type": "object",
+      "properties": {
+        "rows": {
+          "const": 7
+        },
+        "columns": {
+          "const": 8
+        },
+        "grid": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "minItems": 56,
+          "maxItems": 56
+        },
+        "screens": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 254
+              },
+              "cells": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                },
+                "minItems": 256,
+                "maxItems": 256
+              }
+            },
+            "required": [
+              "id",
+              "cells"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 56
+        },
+        "metatiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tile": {
+                "$ref": "#/$defs/optional_key"
+              },
+              "collision": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              }
+            },
+            "required": [
+              "tile",
+              "collision"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 256,
+          "maxItems": 256
+        }
+      },
+      "required": [
+        "rows",
+        "columns",
+        "grid",
+        "screens",
+        "metatiles"
+      ],
+      "additionalProperties": false
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tileset": {
+            "$ref": "#/$defs/key"
+          }
+        },
+        "required": [
+          "tileset"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "placements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 254
+          },
+          "section": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "x": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2047
+          },
+          "y": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "type": {
+            "enum": [
+              "walker",
+              "gem",
+              "goal"
+            ]
+          }
+        },
+        "required": [
+          "index",
+          "section",
+          "x",
+          "y",
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 255
+    },
+    "entry": {
+      "$ref": "#/$defs/destination"
+    },
+    "retry": {
+      "$ref": "#/$defs/destination"
+    },
+    "checkpoint": {
+      "type": "object",
+      "properties": {
+        "section": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "destination": {
+          "$ref": "#/$defs/destination"
+        }
+      },
+      "required": [
+        "section",
+        "page",
+        "destination"
+      ],
+      "additionalProperties": false
+    },
+    "hud": {
+      "type": "object",
+      "properties": {
+        "health": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 5
+        },
+        "lives": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9
+        }
+      },
+      "required": [
+        "health",
+        "lives"
+      ],
+      "additionalProperties": false
+    },
+    "music": {
+      "$ref": "#/$defs/key"
+    }
+  },
+  "required": [
+    "format_version",
+    "level",
+    "terrain",
+    "sections",
+    "placements",
+    "entry",
+    "retry",
+    "checkpoint",
+    "hud"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])",
+      "description": "Use 1..64 lowercase letters, digits, dot, underscore or hyphen; start with a letter or digit."
+    },
+    "optional_key": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 64,
+      "pattern": "^(?:[a-z0-9][a-z0-9._-]*)?(?![\\s\\S])",
+      "description": "Use an empty string or 1..64 lowercase letters, digits, dot, underscore or hyphen."
+    },
+    "destination": {
+      "type": "object",
+      "properties": {
+        "section": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "x": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2047
+        },
+        "y": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 239
+        },
+        "camera_x": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1792
+        }
+      },
+      "required": [
+        "section",
+        "x",
+        "y",
+        "camera_x"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

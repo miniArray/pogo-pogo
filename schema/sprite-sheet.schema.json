@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pogo-pogo:sprite-sheet:1",
+  "title": "Asset pack sprite sheet: the subset of Aseprite's JSON export the game reads",
+  "type": "object",
+  "properties": {
+    "frames": {
+      "$comment": "Array or hash of #/$defs/frame; the reader validates entries after normalising."
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "app": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 256
+        },
+        "version": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 64
+        },
+        "image": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "format": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 64
+        },
+        "size": {
+          "$ref": "#/$defs/size"
+        },
+        "scale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        },
+        "frameTags": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "from": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4095
+              },
+              "to": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4095
+              },
+              "direction": {
+                "enum": [
+                  "forward",
+                  "reverse",
+                  "pingpong",
+                  "pingpong_reverse"
+                ]
+              },
+              "repeat": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 16
+              },
+              "color": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 16
+              },
+              "data": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 256
+              }
+            },
+            "required": [
+              "name",
+              "from",
+              "to",
+              "direction"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "layers": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "slices": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "color": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 16
+              },
+              "data": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 256
+              },
+              "keys": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 4096,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "frame": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 4095
+                    },
+                    "bounds": {
+                      "$ref": "#/$defs/rect"
+                    },
+                    "center": {
+                      "$ref": "#/$defs/rect"
+                    },
+                    "pivot": {
+                      "$ref": "#/$defs/point"
+                    }
+                  },
+                  "required": [
+                    "frame",
+                    "bounds"
+                  ],
+                  "additionalProperties": true
+                }
+              }
+            },
+            "required": [
+              "name",
+              "keys"
+            ],
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": [
+        "image",
+        "frameTags"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "frames",
+    "meta"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "point": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer",
+          "minimum": -8192,
+          "maximum": 8192
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -8192,
+          "maximum": 8192
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "additionalProperties": false
+    },
+    "size": {
+      "type": "object",
+      "properties": {
+        "w": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "h": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        }
+      },
+      "required": [
+        "w",
+        "h"
+      ],
+      "additionalProperties": false
+    },
+    "rect": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer",
+          "minimum": -8192,
+          "maximum": 8192
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -8192,
+          "maximum": 8192
+        },
+        "w": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "h": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "w",
+        "h"
+      ],
+      "additionalProperties": false
+    },
+    "frame": {
+      "type": "object",
+      "properties": {
+        "frame": {
+          "$ref": "#/$defs/rect"
+        },
+        "rotated": {
+          "const": false
+        },
+        "trimmed": {
+          "type": "boolean"
+        },
+        "spriteSourceSize": {
+          "$ref": "#/$defs/rect"
+        },
+        "sourceSize": {
+          "$ref": "#/$defs/size"
+        },
+        "duration": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "frame",
+        "spriteSourceSize",
+        "sourceSize",
+        "duration"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

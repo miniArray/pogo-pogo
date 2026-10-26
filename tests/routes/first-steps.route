@@ -1,0 +1,4 @@
+# Clears first-steps: two gems, a block, a water gap, pogo over a walker and spikes,
+# the vine to the ledge, a second walker and the tall wall.
+. 20 R150 RA40 R3 RA45 . 12 A6 DB30 RB250 R100
+UA10 U100 AR30 R70 . 20 RA30 RDB30 RB120 R200

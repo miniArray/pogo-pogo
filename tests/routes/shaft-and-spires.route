@@ -1,0 +1,5 @@
+# Clears shaft-and-spires: pogo through the cavern, climb the shaft vine into
+# the section above, then bounce left over spikes and water to the goal.
+. 20 RA20 RDB30 RB57 RB57 RB57 RB57 RB57 RB57 RB57 RB57 RB57 RB57 R30 . 20
+L20 UA10 U200 U60 . 10 LA30 L20 LB57 . 4 LA20 LDB33 LB57 LB57 LB57 . 4 LA20 LDB33
+LB57 B30 LB27 . 30
